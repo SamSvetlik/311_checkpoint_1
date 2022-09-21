@@ -22,12 +22,12 @@ const createUser = (req, res) =>{
     // counter's sole purpose is assigning a new ID to each POST
     counter = users.length
     counter++
-    // We create a new object, give it an id, take the body from req.body,
+    // We create a new object, take the body from req.body,
     // (or data/sampleUser, in this case)
-    // and add a postID of 1.
+    // and override the previous id with counter
     const newUser = {
-      id: counter,
-      ...sampleUser
+        ...sampleUser, 
+      id: counter
     }
     console.log(newUser)
     // We push the newly created object to the users array and return
@@ -48,6 +48,10 @@ const updateUser = (req, res) => {
     // Then, you take the updates from the req body,
     // or in this case, from sampleUser
     const alterations = { ...sampleUser }
+    // Using sampleUser has the unfortunate side effect of overriding the user's ID,
+    // creating interesting results if you later try to PUT or DELETE a user Id of 99.
+    // A more dynamic solution would be to replace ...sampleUser with ...req.body.
+    
     // You can use the spread operator to create a new variable with the contents of user.
     // When you spread alterations, the new key values override the previous ones.
     const updatedUser = {
